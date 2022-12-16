@@ -32,3 +32,15 @@ git clone https://github.com/Hermes-Chat-App/hermes-auth-server
 | `make tests` | Run the tests             |
 | `make clean` | Clean the build artifacts |
 | `make setup` | Setup local packages      |
+
+## Build
+
+```bash
+make build
+```
+
+## Run
+
+```bash
+make run
+```

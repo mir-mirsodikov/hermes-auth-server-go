@@ -24,6 +24,9 @@ jobs:
 
       - name: Setup project
         run: make setup
+
+      - name: Verify dependencies
+        run: go mod verify
       
       - name: Run tests
         run: make tests
