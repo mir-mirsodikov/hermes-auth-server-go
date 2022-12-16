@@ -29,6 +29,6 @@ git clone https://github.com/Hermes-Chat-App/hermes-auth-server
 | ------------ | ------------------------- |
 | `make build` | Build the binary          |
 | `make run`   | Run the binary            |
-| `make test`  | Run the tests             |
+| `make tests` | Run the tests             |
 | `make clean` | Clean the build artifacts |
 | `make setup` | Setup local packages      |
