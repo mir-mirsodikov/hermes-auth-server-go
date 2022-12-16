@@ -26,7 +26,7 @@ jobs:
         run: make setup
       
       - name: Run tests
-        run: make test
+        run: make tests
 
       - name: Run build
         run: make build
