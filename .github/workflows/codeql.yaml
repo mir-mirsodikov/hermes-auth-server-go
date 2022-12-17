@@ -55,7 +55,3 @@ jobs:
       with:
         category: "/language:${{matrix.language}}"
     
-    - name: Upload CodeQL results
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: results/go.sarif
