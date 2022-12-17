@@ -1,4 +1,4 @@
-package routes
+package router
 
 import (
 	"log"
@@ -10,7 +10,7 @@ import (
 
 var router = gin.Default()
 
-func InitRoutes() {
+func InitRouter() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")

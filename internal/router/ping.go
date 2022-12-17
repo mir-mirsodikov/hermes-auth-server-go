@@ -1,4 +1,4 @@
-package routes
+package router
 
 import (
 	controller "github.com/Hermes-chat-App/hermes-auth-server/internal/controllers"

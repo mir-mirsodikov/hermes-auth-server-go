@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	route "github.com/Hermes-chat-App/hermes-auth-server/internal/routes"
+	route "github.com/Hermes-chat-App/hermes-auth-server/internal/router"
 )
 
 func main() {
 	fmt.Println("Hello, world")
-	route.InitRoutes()
+	route.InitRouter()
 }
