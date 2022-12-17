@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Hermes-chat-App/hermes-auth-server/internal/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -22,10 +23,15 @@ func InitRouter() {
 		port = "8080"
 	}
 
+	setupMiddleware()
 	getRoutes()
 	router.Run()
 }
 
 func getRoutes() {
 	InitPingRoutes(router.Group("/ping"))
+}
+
+func setupMiddleware() {
+	router.Use(gin.CustomRecovery(middleware.CustomRecoveryMiddleware()))
 }
