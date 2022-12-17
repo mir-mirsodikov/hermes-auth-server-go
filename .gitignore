@@ -22,4 +22,6 @@ go.work
 
 bin/*
 
+tmp/*
+
 *.env
