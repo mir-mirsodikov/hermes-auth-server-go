@@ -12,3 +12,11 @@ func GetPing(c *gin.Context) {
 		"message": response.Message,
 	})
 }
+
+func GetPanic(c *gin.Context) {
+	_, err := application.GetPanic()
+
+	if err != nil {
+		panic(err)
+	}
+}
