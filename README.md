@@ -31,14 +31,15 @@ There is a `.env.example` file in the root of the project. Copy this file to `.e
 
 ## Commands
 
-| Command      | Description                    |
-| ------------ | ------------------------------ |
-| `make build` | Build the binary               |
-| `make run`   | Run the binary                 |
-| `make tests` | Run the tests                  |
-| `make clean` | Clean the build artifacts      |
-| `make setup` | Setup local packages           |
-| `air`        | Run the server with hot reload |
+| Command                 | Description                                                             |
+| ----------------------- | ----------------------------------------------------------------------- |
+| `make build`            | Build the binary                                                        |
+| `make run`              | Run the binary                                                          |
+| `make tests`            | Run the tests                                                           |
+| `make clean`            | Clean the build artifacts                                               |
+| `make setup`            | Setup local packages                                                    |
+| `make give-permissions` | Give permissions to the `make` commands to execute the `scripts` folder |
+| `air`                   | Run the server with hot reload                                          |
 
 ## Build
 
