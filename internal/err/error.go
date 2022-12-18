@@ -1,25 +1,31 @@
 package err
 
-type ValidationError struct {
-	Err error
+type ErrorType int16
+
+const (
+	ValidationError ErrorType = iota
+	BadRequestError
+	AuthorizationError
+)
+
+type ApplicationError struct {
+	ErrType ErrorType
+	Err     error
 }
 
-type BadRequestError struct {
-	Err error
+func (e *ApplicationError) Error() string {
+	return e.ErrString() + ":" + e.Err.Error()
 }
 
-type AuthorizationError struct {
-	Err error
-}
-
-func (e *ValidationError) Error() string {
-	return "Validation:" + e.Err.Error()
-}
-
-func (e *BadRequestError) Error() string {
-	return "Bad Request:" + e.Err.Error()
-}
-
-func (e *AuthorizationError) Error() string {
-	return "Authorization:" + e.Err.Error()
+func (e *ApplicationError) ErrString() string {
+	switch e.ErrType {
+	case ValidationError:
+		return "Validation"
+	case BadRequestError:
+		return "Bad Request"
+	case AuthorizationError:
+		return "Authorization"
+	default:
+		return "Unknown"
+	}
 }
