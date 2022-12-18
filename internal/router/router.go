@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/Hermes-chat-App/hermes-auth-server/internal/middleware"
+	"github.com/Hermes-chat-App/hermes-auth-server/internal/controllers"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,6 +18,6 @@ func getRoutes() {
 }
 
 func setupMiddleware() {
-	router.Use(gin.CustomRecovery(middleware.CustomRecoveryMiddleware()))
-	router.Use(middleware.ErrorHandler())
+	router.Use(gin.CustomRecovery(controllers.CustomRecoveryMiddleware()))
+	router.Use(controllers.ErrorHandler())
 }
