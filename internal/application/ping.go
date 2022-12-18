@@ -1,6 +1,10 @@
 package application
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/Hermes-chat-App/hermes-auth-server/internal/err"
+)
 
 type GetPingResponse struct {
 	Message string `json:"message"`
@@ -11,5 +15,5 @@ func GetPing() GetPingResponse {
 }
 
 func GetPanic() (GetPingResponse, error) {
-	return GetPingResponse{}, errors.New("Panic")
+	return GetPingResponse{}, &err.BadRequestError{Err: errors.New("Panic")}
 }
