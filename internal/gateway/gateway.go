@@ -15,5 +15,8 @@ func Init(connStr string) {
 	if err != nil {
 		panic(err)
 	}
+	if db.Ping() != nil {
+		panic(err)
+	}
 	log.Println("Database connected successfully")
 }

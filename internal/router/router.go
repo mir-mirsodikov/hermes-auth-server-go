@@ -15,6 +15,7 @@ func InitRouter() {
 
 func getRoutes() {
 	InitPingRoutes(router.Group("/ping"))
+	InitUserRoutes(router.Group("/user"))
 }
 
 func setupMiddleware() {
