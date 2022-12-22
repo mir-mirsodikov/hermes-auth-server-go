@@ -12,6 +12,25 @@ import (
 
 func CreateUser(user *model.User) (*model.User, error) {
 	ctx := context.Background()
+
+	if existingUser, err := provider.Queries.GetUserByEmailOrUsername(ctx, db.GetUserByEmailOrUsernameParams{
+		Email:    user.Email,
+		Username: user.Username,
+	}); existingUser != (db.User{}) && err == nil {
+		var duplicate string
+
+		if existingUser.Email == user.Email {
+			duplicate = "email"
+		} else if existingUser.Username == user.Username {
+			duplicate = "username"
+		}
+
+		return nil, &exception.ApplicationError{
+			ErrType: exception.BadRequestError,
+			Err:     errors.New(duplicate + " already exists"),
+		}
+	}
+
 	createdUser, err := provider.Queries.CreateUser(ctx, db.CreateUserParams{
 		Name:     user.Name,
 		Email:    user.Email,
