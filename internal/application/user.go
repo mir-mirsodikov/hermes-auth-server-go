@@ -6,7 +6,6 @@ import (
 
 	"github.com/Hermes-chat-App/hermes-auth-server/internal/db"
 	"github.com/Hermes-chat-App/hermes-auth-server/internal/exception"
-	"github.com/Hermes-chat-App/hermes-auth-server/internal/model"
 	"github.com/Hermes-chat-App/hermes-auth-server/internal/provider"
 )
 
@@ -16,7 +15,15 @@ type CreateUserRequest struct {
 	Username string `json:"username" binding:"required"`
 }
 
-func CreateUser(user *CreateUserRequest) (*model.User, error) {
+type CreateUserResponse struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Email       string `json:"email"`
+	Username    string `json:"username"`
+	AccessToken string `json:"accessToken"`
+}
+
+func CreateUser(user *CreateUserRequest) (*CreateUserResponse, error) {
 	ctx := context.Background()
 
 	if existingUser, err := provider.Queries.GetUserByEmailOrUsername(ctx, db.GetUserByEmailOrUsernameParams{
@@ -50,10 +57,20 @@ func CreateUser(user *CreateUserRequest) (*model.User, error) {
 		}
 	}
 
-	return &model.User{
-		Id:       createdUser.ID.String(),
-		Username: createdUser.Username,
-		Email:    createdUser.Email,
-		Name:     createdUser.Name,
+	accessToken, err := provider.GenerateToken(createdUser.ID.String())
+
+	if err != nil {
+		return nil, &exception.ApplicationError{
+			ErrType: exception.AuthorizationError,
+			Err:     errors.New("unable to generate access token"),
+		}
+	}
+
+	return &CreateUserResponse{
+		ID:          createdUser.ID.String(),
+		Username:    createdUser.Username,
+		Email:       createdUser.Email,
+		Name:        createdUser.Name,
+		AccessToken: accessToken,
 	}, nil
 }
