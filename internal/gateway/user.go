@@ -1,35 +1,28 @@
 package gateway
 
 import (
-	"database/sql"
-	"encoding/json"
-	"log"
+	"context"
 
+	"github.com/Hermes-chat-App/hermes-auth-server/internal/db"
 	"github.com/Hermes-chat-App/hermes-auth-server/internal/model"
 )
 
 func CreateUser(user *model.User) (*model.User, error) {
-	userJson, err := json.Marshal(user)
+	ctx := context.Background()
+	createdUser, err := Queries.CreateUser(ctx, db.CreateUserParams{
+		Name:     user.Name,
+		Email:    user.Email,
+		Username: user.Username,
+	})
+
 	if err != nil {
 		return nil, err
 	}
 
-	log.Print("userJson", string(userJson))
-
-	userReturn, err := json.Marshal(&model.User{})
-	if err != nil {
-		return nil, err
-	}
-
-	db.Exec(`call create_user(@input, $2);`, sql.Named("input", `[{"username": "testing", "email": "testing", "name": "testing"}]`), userReturn)
-
-	log.Print(string(userReturn))
-
-	parsedUserReturn := &model.User{}
-
-	if err := json.Unmarshal(userReturn, parsedUserReturn); err != nil {
-		return nil, err
-	}
-
-	return parsedUserReturn, nil
+	return &model.User{
+		Id:       createdUser.ID.String(),
+		Username: createdUser.Username,
+		Email:    createdUser.Email,
+		Name:     createdUser.Name,
+	}, nil
 }

@@ -5,11 +5,12 @@
 package db
 
 import (
-	"database/sql"
+	"github.com/google/uuid"
 )
 
-type Author struct {
-	ID   int64
-	Name string
-	Bio  sql.NullString
+type User struct {
+	ID       uuid.UUID
+	Name     string
+	Email    string
+	Username string
 }

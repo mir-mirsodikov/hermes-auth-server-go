@@ -8,6 +8,7 @@ import (
 var router = gin.Default()
 
 func InitRouter() {
+	router.SetTrustedProxies(nil)
 	setupMiddleware()
 	getRoutes()
 	router.Run()

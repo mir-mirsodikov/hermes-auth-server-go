@@ -2,21 +2,22 @@ package gateway
 
 import (
 	"database/sql"
-	"log"
 
 	_ "github.com/lib/pq"
+	sqlc "github.com/Hermes-chat-App/hermes-auth-server/internal/db"
 )
 
-var db *sql.DB
+var Queries *sqlc.Queries
 
-func Init(connStr string) {
+func Init(connStr string) error {
 	var err error
-	db, err = sql.Open("postgres", connStr)
+
+	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	if db.Ping() != nil {
-		panic(err)
-	}
-	log.Println("Database connected successfully")
+
+	Queries = sqlc.New(db)
+
+	return nil
 }
