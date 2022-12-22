@@ -3,7 +3,7 @@ package application
 import (
 	"errors"
 
-	"github.com/Hermes-chat-App/hermes-auth-server/internal/err"
+	"github.com/Hermes-chat-App/hermes-auth-server/internal/exception"
 )
 
 type GetPingResponse struct {
@@ -15,5 +15,5 @@ func GetPing() GetPingResponse {
 }
 
 func GetPanic() (GetPingResponse, error) {
-	return GetPingResponse{}, &err.ApplicationError{ErrType: err.BadRequestError, Err: errors.New("Panic")}
+	return GetPingResponse{}, &exception.ApplicationError{ErrType: exception.BadRequestError, Err: errors.New("Panic")}
 }

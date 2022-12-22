@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/Hermes-chat-App/hermes-auth-server/internal/gateway"
+	"github.com/Hermes-chat-App/hermes-auth-server/internal/provider"
 	route "github.com/Hermes-chat-App/hermes-auth-server/internal/router"
 	"github.com/joho/godotenv"
 )
@@ -28,6 +28,6 @@ func main() {
 
 	connStr = "host=localhost port=5432 user=postgres dbname=user_db sslmode=disable"
 
-	gateway.Init(connStr)
+	provider.DBInit(connStr)
 	route.InitRouter()
 }
