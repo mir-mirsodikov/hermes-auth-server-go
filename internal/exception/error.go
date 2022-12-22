@@ -1,4 +1,4 @@
-package err
+package exception
 
 type ErrorType int16
 

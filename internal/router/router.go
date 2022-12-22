@@ -8,6 +8,7 @@ import (
 var router = gin.Default()
 
 func InitRouter() {
+	router.SetTrustedProxies(nil)
 	setupMiddleware()
 	getRoutes()
 	router.Run()
@@ -15,6 +16,7 @@ func InitRouter() {
 
 func getRoutes() {
 	InitPingRoutes(router.Group("/ping"))
+	InitUserRoutes(router.Group("/user"))
 }
 
 func setupMiddleware() {
