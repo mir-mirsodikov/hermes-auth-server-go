@@ -10,7 +10,13 @@ import (
 	"github.com/Hermes-chat-App/hermes-auth-server/internal/provider"
 )
 
-func CreateUser(user *model.User) (*model.User, error) {
+type CreateUserRequest struct {
+	Name     string `json:"name" binding:"required"`
+	Email    string `json:"email" binding:"required"`
+	Username string `json:"username" binding:"required"`
+}
+
+func CreateUser(user *CreateUserRequest) (*model.User, error) {
 	ctx := context.Background()
 
 	if existingUser, err := provider.Queries.GetUserByEmailOrUsername(ctx, db.GetUserByEmailOrUsernameParams{

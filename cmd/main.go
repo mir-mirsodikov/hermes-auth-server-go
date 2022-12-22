@@ -23,10 +23,8 @@ func main() {
 	}
 
 	if connStr == "" {
-		connStr = "postgresql://postgres@localhost:5432/user_db?sslmode=disable"
+		connStr = "postgresql://postgres@localhost:5432/user_db"
 	}
-
-	connStr = "host=localhost port=5432 user=postgres dbname=user_db sslmode=disable"
 
 	provider.DBInit(connStr)
 	route.InitRouter()
