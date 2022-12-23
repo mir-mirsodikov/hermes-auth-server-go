@@ -5,6 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitUserRoutes(r *gin.RouterGroup) {
+func InitRegisterRoutes(r *gin.RouterGroup) {
 	r.POST("", controllers.CreateUser)
 }

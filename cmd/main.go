@@ -17,17 +17,22 @@ func main() {
 
 	port := os.Getenv("PORT")
 	connStr := os.Getenv("DATABASE_URL")
+	tokenSecret := os.Getenv("TOKEN_SECRET")
 
 	if port == "" {
 		port = "8080"
 	}
 
 	if connStr == "" {
-		connStr = "postgresql://postgres@localhost:5432/user_db?sslmode=disable"
+		connStr = "postgresql://postgres@localhost:5432/user_db"
 	}
 
-	connStr = "host=localhost port=5432 user=postgres dbname=user_db sslmode=disable"
+	if tokenSecret == "" {
+		tokenSecret = "secret"
+	}
 
-	provider.DBInit(connStr)
+	provider.Init(connStr, tokenSecret)
+	token, err := provider.GenerateToken("abcd")
+	log.Println(token, err)
 	route.InitRouter()
 }
