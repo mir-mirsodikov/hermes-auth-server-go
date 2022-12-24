@@ -3,6 +3,7 @@ package application
 import (
 	"context"
 	"errors"
+	"log"
 
 	"github.com/Hermes-chat-App/hermes-auth-server/internal/db"
 	"github.com/Hermes-chat-App/hermes-auth-server/internal/exception"
@@ -65,6 +66,15 @@ func CreateUser(user *CreateUserRequest) (*CreateUserResponse, error) {
 			Err:     errors.New("unable to generate access token"),
 		}
 	}
+
+	msg := `Welcome to Hermes, ` + createdUser.Name + "!\n" + "This is a test email."
+
+	go func() {
+		if err := provider.SendEmail(createdUser.Email, "Subject: Welcome to Hermes\n", msg); err != nil {
+			log.Println(err)
+		}
+	}()
+	log.Println("after email")
 
 	return &CreateUserResponse{
 		ID:          createdUser.ID.String(),
