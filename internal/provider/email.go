@@ -22,8 +22,6 @@ func SendEmail(to string, subject string, body string) error {
 
 	err := smtp.SendMail(address, auth, from, toEmail, msg)
 
-	log.Println("sending email")
-	
 	if err != nil {
 		log.Println(err)
 	}
