@@ -129,6 +129,8 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User,
 
 const getVerificationByUser = `-- name: GetVerificationByUser :one
 SELECT user_id, code, created_at FROM "verification" WHERE user_id = $1
+ORDER BY "created_at" DESC
+LIMIT 1
 `
 
 func (q *Queries) GetVerificationByUser(ctx context.Context, userID uuid.UUID) (Verification, error) {

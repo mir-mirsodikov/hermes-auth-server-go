@@ -21,4 +21,6 @@ VALUES ($1, $2)
 RETURNING *;
 
 -- name: GetVerificationByUser :one
-SELECT * FROM "verification" WHERE user_id = $1;
+SELECT * FROM "verification" WHERE user_id = $1
+ORDER BY "created_at" DESC
+LIMIT 1;
