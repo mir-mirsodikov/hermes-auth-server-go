@@ -14,7 +14,7 @@ import (
 const createUser = `-- name: CreateUser :one
 INSERT INTO "user" (name, email, username)
 VALUES ($1, $2, $3)
-RETURNING id, name, email, username
+RETURNING id, name, email, username, verfied
 `
 
 type CreateUserParams struct {
@@ -31,12 +31,31 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.Name,
 		&i.Email,
 		&i.Username,
+		&i.Verfied,
 	)
 	return i, err
 }
 
+const createVerification = `-- name: CreateVerification :one
+INSERT INTO "verification" (user_id, code) 
+VALUES ($1, $2)
+RETURNING user_id, code, created_at
+`
+
+type CreateVerificationParams struct {
+	UserID uuid.UUID
+	Code   int32
+}
+
+func (q *Queries) CreateVerification(ctx context.Context, arg CreateVerificationParams) (Verification, error) {
+	row := q.db.QueryRowContext(ctx, createVerification, arg.UserID, arg.Code)
+	var i Verification
+	err := row.Scan(&i.UserID, &i.Code, &i.CreatedAt)
+	return i, err
+}
+
 const getUserByEmail = `-- name: GetUserByEmail :one
-SELECT id, name, email, username FROM "user" WHERE email = $1
+SELECT id, name, email, username, verfied FROM "user" WHERE email = $1
 `
 
 func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) {
@@ -47,12 +66,13 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 		&i.Name,
 		&i.Email,
 		&i.Username,
+		&i.Verfied,
 	)
 	return i, err
 }
 
 const getUserByEmailOrUsername = `-- name: GetUserByEmailOrUsername :one
-SELECT id, name, email, username FROM "user" WHERE email = $1 OR username = $2
+SELECT id, name, email, username, verfied FROM "user" WHERE email = $1 OR username = $2
 `
 
 type GetUserByEmailOrUsernameParams struct {
@@ -68,12 +88,13 @@ func (q *Queries) GetUserByEmailOrUsername(ctx context.Context, arg GetUserByEma
 		&i.Name,
 		&i.Email,
 		&i.Username,
+		&i.Verfied,
 	)
 	return i, err
 }
 
 const getUserByID = `-- name: GetUserByID :one
-SELECT id, name, email, username FROM "user" WHERE id = $1
+SELECT id, name, email, username, verfied FROM "user" WHERE id = $1
 `
 
 func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (User, error) {
@@ -84,12 +105,13 @@ func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (User, error) {
 		&i.Name,
 		&i.Email,
 		&i.Username,
+		&i.Verfied,
 	)
 	return i, err
 }
 
 const getUserByUsername = `-- name: GetUserByUsername :one
-SELECT id, name, email, username FROM "user" WHERE username = $1
+SELECT id, name, email, username, verfied FROM "user" WHERE username = $1
 `
 
 func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User, error) {
@@ -100,6 +122,18 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User,
 		&i.Name,
 		&i.Email,
 		&i.Username,
+		&i.Verfied,
 	)
+	return i, err
+}
+
+const getVerificationByUser = `-- name: GetVerificationByUser :one
+SELECT user_id, code, created_at FROM "verification" WHERE user_id = $1
+`
+
+func (q *Queries) GetVerificationByUser(ctx context.Context, userID uuid.UUID) (Verification, error) {
+	row := q.db.QueryRowContext(ctx, getVerificationByUser, userID)
+	var i Verification
+	err := row.Scan(&i.UserID, &i.Code, &i.CreatedAt)
 	return i, err
 }

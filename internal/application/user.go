@@ -71,7 +71,12 @@ func CreateUser(user *CreateUserRequest) (*CreateUserResponse, error) {
 	}
 
 	go func() {
-		msg := fmt.Sprintf(getMessage(), createdUser.Name, generateCode())
+		code := generateCode()
+		msg := fmt.Sprintf(getMessage(), createdUser.Name, code)
+		provider.Queries.CreateVerification(ctx, db.CreateVerificationParams{
+			UserID: createdUser.ID,
+			Code:   int32(code),
+		})
 		if err := provider.SendEmail(createdUser.Email, "Subject: Welcome to Hermes\n", msg); err != nil {
 			log.Println(err)
 		}
@@ -95,10 +100,11 @@ func generateCode() int {
 
 func getMessage() string {
 	return `
-	Welcome to Hermes, %s!
-	Your verification code is %d.
-	This code will expire in 5 minutes.
+Welcome to Hermes, %s!
 
-	Please do not reply to this email.
+Your verification code is %d.
+This code will expire in 5 minutes.
+
+Please do not reply to this email.
 	`
 }
