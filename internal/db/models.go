@@ -15,7 +15,7 @@ type User struct {
 	Name     string
 	Email    string
 	Username string
-	Verfied  sql.NullBool
+	Verified sql.NullBool
 }
 
 type Verification struct {

@@ -3,7 +3,7 @@ CREATE TABLE "user" (
   name text not null,
   email text not null unique,
   username text not null unique,
-  verfied boolean default false,
+  verified boolean default false,
 
   primary key (id)
 );

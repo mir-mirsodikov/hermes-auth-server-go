@@ -7,6 +7,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/google/uuid"
 )
@@ -14,7 +15,7 @@ import (
 const createUser = `-- name: CreateUser :one
 INSERT INTO "user" (name, email, username)
 VALUES ($1, $2, $3)
-RETURNING id, name, email, username, verfied
+RETURNING id, name, email, username, verified
 `
 
 type CreateUserParams struct {
@@ -31,7 +32,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.Name,
 		&i.Email,
 		&i.Username,
-		&i.Verfied,
+		&i.Verified,
 	)
 	return i, err
 }
@@ -55,7 +56,7 @@ func (q *Queries) CreateVerification(ctx context.Context, arg CreateVerification
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
-SELECT id, name, email, username, verfied FROM "user" WHERE email = $1
+SELECT id, name, email, username, verified FROM "user" WHERE email = $1
 `
 
 func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) {
@@ -66,13 +67,13 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 		&i.Name,
 		&i.Email,
 		&i.Username,
-		&i.Verfied,
+		&i.Verified,
 	)
 	return i, err
 }
 
 const getUserByEmailOrUsername = `-- name: GetUserByEmailOrUsername :one
-SELECT id, name, email, username, verfied FROM "user" WHERE email = $1 OR username = $2
+SELECT id, name, email, username, verified FROM "user" WHERE email = $1 OR username = $2
 `
 
 type GetUserByEmailOrUsernameParams struct {
@@ -88,13 +89,13 @@ func (q *Queries) GetUserByEmailOrUsername(ctx context.Context, arg GetUserByEma
 		&i.Name,
 		&i.Email,
 		&i.Username,
-		&i.Verfied,
+		&i.Verified,
 	)
 	return i, err
 }
 
 const getUserByID = `-- name: GetUserByID :one
-SELECT id, name, email, username, verfied FROM "user" WHERE id = $1
+SELECT id, name, email, username, verified FROM "user" WHERE id = $1
 `
 
 func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (User, error) {
@@ -105,13 +106,13 @@ func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (User, error) {
 		&i.Name,
 		&i.Email,
 		&i.Username,
-		&i.Verfied,
+		&i.Verified,
 	)
 	return i, err
 }
 
 const getUserByUsername = `-- name: GetUserByUsername :one
-SELECT id, name, email, username, verfied FROM "user" WHERE username = $1
+SELECT id, name, email, username, verified FROM "user" WHERE username = $1
 `
 
 func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User, error) {
@@ -122,7 +123,7 @@ func (q *Queries) GetUserByUsername(ctx context.Context, username string) (User,
 		&i.Name,
 		&i.Email,
 		&i.Username,
-		&i.Verfied,
+		&i.Verified,
 	)
 	return i, err
 }
@@ -137,5 +138,42 @@ func (q *Queries) GetVerificationByUser(ctx context.Context, userID uuid.UUID) (
 	row := q.db.QueryRowContext(ctx, getVerificationByUser, userID)
 	var i Verification
 	err := row.Scan(&i.UserID, &i.Code, &i.CreatedAt)
+	return i, err
+}
+
+const updateUser = `-- name: UpdateUser :one
+UPDATE "user" SET 
+"name" = COALESCE($1, name),
+email = COALESCE($2, email),
+username = COALESCE($3, username),
+verified = COALESCE($4, verified)
+WHERE id = $5
+RETURNING id, name, email, username, verified
+`
+
+type UpdateUserParams struct {
+	Name     string
+	Email    string
+	Username string
+	Verified sql.NullBool
+	ID       uuid.UUID
+}
+
+func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
+	row := q.db.QueryRowContext(ctx, updateUser,
+		arg.Name,
+		arg.Email,
+		arg.Username,
+		arg.Verified,
+		arg.ID,
+	)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Email,
+		&i.Username,
+		&i.Verified,
+	)
 	return i, err
 }

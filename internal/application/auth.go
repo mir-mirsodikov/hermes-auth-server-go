@@ -4,10 +4,11 @@ import (
 	"context"
 	"errors"
 
+	"time"
+
 	"github.com/Hermes-chat-App/hermes-auth-server/internal/exception"
 	"github.com/Hermes-chat-App/hermes-auth-server/internal/provider"
 	"github.com/google/uuid"
-	"time"
 )
 
 type VerifyCodeRequest struct {
