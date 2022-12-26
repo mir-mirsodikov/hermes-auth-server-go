@@ -32,7 +32,5 @@ func main() {
 	}
 
 	provider.Init(connStr, tokenSecret)
-	token, err := provider.GenerateToken("abcd")
-	log.Println(token, err)
 	route.InitRouter()
 }

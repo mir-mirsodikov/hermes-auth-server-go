@@ -6,6 +6,7 @@ package db
 
 import (
 	"database/sql"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -21,5 +22,5 @@ type User struct {
 type Verification struct {
 	UserID    uuid.UUID
 	Code      int32
-	CreatedAt sql.NullTime
+	CreatedAt time.Time
 }

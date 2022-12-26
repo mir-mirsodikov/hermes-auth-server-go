@@ -5,8 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"math/rand"
-	"time"
 
 	"github.com/Hermes-chat-App/hermes-auth-server/internal/db"
 	"github.com/Hermes-chat-App/hermes-auth-server/internal/exception"
@@ -71,7 +69,7 @@ func CreateUser(user *CreateUserRequest) (*CreateUserResponse, error) {
 	}
 
 	go func() {
-		code := generateCode()
+		code := provider.GenerateVerificationCode()
 		msg := fmt.Sprintf(getMessage(), createdUser.Name, code)
 		provider.Queries.CreateVerification(ctx, db.CreateVerificationParams{
 			UserID: createdUser.ID,
@@ -89,13 +87,6 @@ func CreateUser(user *CreateUserRequest) (*CreateUserResponse, error) {
 		Name:        createdUser.Name,
 		AccessToken: accessToken,
 	}, nil
-}
-
-func generateCode() int {
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	max := 999999
-	min := 100000
-	return r.Intn(max-min) + min
 }
 
 func getMessage() string {
