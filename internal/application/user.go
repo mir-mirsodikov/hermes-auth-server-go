@@ -22,7 +22,6 @@ type CreateUserResponse struct {
 	Name        string `json:"name"`
 	Email       string `json:"email"`
 	Username    string `json:"username"`
-	AccessToken string `json:"accessToken"`
 }
 
 func CreateUser(user *CreateUserRequest) (*CreateUserResponse, error) {
@@ -59,15 +58,6 @@ func CreateUser(user *CreateUserRequest) (*CreateUserResponse, error) {
 		}
 	}
 
-	accessToken, err := provider.GenerateToken(createdUser.ID.String())
-
-	if err != nil {
-		return nil, &exception.ApplicationError{
-			ErrType: exception.AuthorizationError,
-			Err:     errors.New("unable to generate access token"),
-		}
-	}
-
 	go func() {
 		code := provider.GenerateVerificationCode()
 		msg := fmt.Sprintf(getMessage(), createdUser.Name, code)
@@ -85,7 +75,6 @@ func CreateUser(user *CreateUserRequest) (*CreateUserResponse, error) {
 		Username:    createdUser.Username,
 		Email:       createdUser.Email,
 		Name:        createdUser.Name,
-		AccessToken: accessToken,
 	}, nil
 }
 

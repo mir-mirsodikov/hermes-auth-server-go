@@ -20,7 +20,8 @@ type VerifyCodeRequest struct {
 }
 
 type VerifyCodeResponse struct {
-	Valid bool `json:"valid"`
+	Valid       bool   `json:"valid"`
+	AccessToken string `json:"accessToken"`
 }
 
 func VerifyCode(r *VerifyCodeRequest) (*VerifyCodeResponse, error) {
@@ -46,7 +47,19 @@ func VerifyCode(r *VerifyCodeRequest) (*VerifyCodeResponse, error) {
 		return &VerifyCodeResponse{Valid: false}, nil
 	}
 
-	return &VerifyCodeResponse{Valid: true}, nil
+	accessToken, err := provider.GenerateToken(r.ID.String())
+
+	if err != nil {
+		return &VerifyCodeResponse{Valid: false}, &exception.ApplicationError{
+			ErrType: exception.BadRequestError,
+			Err:     errors.New("unable to generate access token"),
+		}
+	}
+
+	return &VerifyCodeResponse{
+		Valid: true,
+		AccessToken: accessToken,
+	}, nil
 }
 
 type LoginRequest struct {
