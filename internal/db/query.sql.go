@@ -7,7 +7,6 @@ package db
 
 import (
 	"context"
-	"database/sql"
 
 	"github.com/google/uuid"
 )
@@ -138,42 +137,5 @@ func (q *Queries) GetVerificationByUser(ctx context.Context, userID uuid.UUID) (
 	row := q.db.QueryRowContext(ctx, getVerificationByUser, userID)
 	var i Verification
 	err := row.Scan(&i.UserID, &i.Code, &i.CreatedAt)
-	return i, err
-}
-
-const updateUser = `-- name: UpdateUser :one
-UPDATE "user" SET 
-"name" = COALESCE($1, name),
-email = COALESCE($2, email),
-username = COALESCE($3, username),
-verified = COALESCE($4, verified)
-WHERE id = $5
-RETURNING id, name, email, username, verified
-`
-
-type UpdateUserParams struct {
-	Name     string
-	Email    string
-	Username string
-	Verified sql.NullBool
-	ID       uuid.UUID
-}
-
-func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
-	row := q.db.QueryRowContext(ctx, updateUser,
-		arg.Name,
-		arg.Email,
-		arg.Username,
-		arg.Verified,
-		arg.ID,
-	)
-	var i User
-	err := row.Scan(
-		&i.ID,
-		&i.Name,
-		&i.Email,
-		&i.Username,
-		&i.Verified,
-	)
 	return i, err
 }

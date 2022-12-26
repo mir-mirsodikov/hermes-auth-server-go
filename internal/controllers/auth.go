@@ -21,3 +21,20 @@ func VerifyCode(c *gin.Context) {
 
 	c.JSON(200, valid)
 }
+
+func Login(c *gin.Context) {
+	var loginRequest application.LoginRequest
+
+	if !ValidateRequest(c, &loginRequest) {
+		return
+	}
+
+	response, err := application.Login(&loginRequest)
+
+	if err != nil {
+		c.Errors = append(c.Errors, c.Error(err))
+		return
+	}
+
+	c.JSON(200, response)
+}

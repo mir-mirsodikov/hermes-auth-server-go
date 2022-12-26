@@ -13,6 +13,5 @@ create table "verification" (
   code int not null,
   created_at timestamp default (now() at time zone 'utc'),
 
-  primary key (user_id),
-  unique (user_id, created_at)
+  primary key (user_id, created_at)
 )
