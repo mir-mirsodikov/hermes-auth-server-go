@@ -23,9 +23,17 @@ git clone https://github.com/Hermes-Chat-App/hermes-auth-server
 
 There is a `.env.example` file in the root of the project. Copy this file to `.env` and fill in the values.
 
-| Variable Name | Description                                 |
-| ------------- | ------------------------------------------- |
-| `PORT`        | Port to run the server on. Defaults to 8080 |
+| Variable Name           | Description                                 |
+| ----------------------- | ------------------------------------------- |
+| `PORT`                  | Port to run the server on. Defaults to 8080 |
+| `DATABASE_URL`          | URL to the (Postgres) database.             |
+| `JWT_SECRET`            | Secret used to sign JWT tokens.             |
+| `ACCESS_TOKEN_LIFETIME` | Lifetime of access tokens in minutes.       |
+| `EMAIL_HOST`            | Host of the email server.                   |
+| `EMAIL_PORT`            | Port of the email server.                   |
+| `EMAIL_USERNAME`        | Username of the email server.               |
+| `EMAIL_PASSWORD`        | Password of the email server.               |
+
 
 # Build and Run
 

@@ -5,6 +5,8 @@
 package db
 
 import (
+	"database/sql"
+
 	"github.com/google/uuid"
 )
 
@@ -13,4 +15,11 @@ type User struct {
 	Name     string
 	Email    string
 	Username string
+	Verified sql.NullBool
+}
+
+type Verification struct {
+	UserID    uuid.UUID
+	Code      int32
+	CreatedAt sql.NullTime
 }
