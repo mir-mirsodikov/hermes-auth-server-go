@@ -57,7 +57,7 @@ func VerifyCode(r *VerifyCodeRequest) (*VerifyCodeResponse, error) {
 	}
 
 	return &VerifyCodeResponse{
-		Valid: true,
+		Valid:       true,
 		AccessToken: accessToken,
 	}, nil
 }
