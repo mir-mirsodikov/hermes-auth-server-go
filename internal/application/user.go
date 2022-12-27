@@ -18,10 +18,10 @@ type CreateUserRequest struct {
 }
 
 type CreateUserResponse struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Email       string `json:"email"`
-	Username    string `json:"username"`
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Username string `json:"username"`
 }
 
 func CreateUser(user *CreateUserRequest) (*CreateUserResponse, error) {
@@ -71,10 +71,10 @@ func CreateUser(user *CreateUserRequest) (*CreateUserResponse, error) {
 	}()
 
 	return &CreateUserResponse{
-		ID:          createdUser.ID.String(),
-		Username:    createdUser.Username,
-		Email:       createdUser.Email,
-		Name:        createdUser.Name,
+		ID:       createdUser.ID.String(),
+		Username: createdUser.Username,
+		Email:    createdUser.Email,
+		Name:     createdUser.Name,
 	}, nil
 }
 
