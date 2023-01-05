@@ -21,6 +21,7 @@ func getRoutes() {
 }
 
 func setupMiddleware() {
+	router.Use(controllers.CORSMiddleware())
 	router.Use(gin.CustomRecovery(controllers.CustomRecoveryMiddleware()))
 	router.Use(controllers.ErrorHandler())
 }
