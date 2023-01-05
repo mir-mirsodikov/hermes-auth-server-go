@@ -19,7 +19,11 @@ func VerifyCode(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, valid)
+	c.SetCookie("access_token", valid.AccessToken, 3600, "/", "localhost", false, true)
+
+	c.JSON(200, gin.H{
+		"valid": valid.Valid,
+	})
 }
 
 func Login(c *gin.Context) {
