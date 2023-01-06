@@ -17,10 +17,11 @@ func InitRouter() {
 func getRoutes() {
 	InitPingRoutes(router.Group("/ping"))
 	InitRegisterRoutes(router.Group("/register"))
-	InitAuthRoutes(router.Group("/auth"))
+	InitAuthRoutes(router.Group(""))
 }
 
 func setupMiddleware() {
+	router.Use(controllers.CORSMiddleware())
 	router.Use(gin.CustomRecovery(controllers.CustomRecoveryMiddleware()))
 	router.Use(controllers.ErrorHandler())
 }
